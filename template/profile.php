@@ -72,6 +72,31 @@ if(!empty($_GET['content_delete_id'])){
 		$wer = '<p style="color:#f00;">Something wrong! please try again.</p>';
 	}
 }
+
+if(isset($_POST['addref'])){
+	if($mysqli->query("insert into reference values(
+		'',
+		'".$_SESSION['profile_session']."',
+		'".base64_encode($_POST['reference_name'])."',
+		'".base64_encode($_POST['position'])."',
+		'".base64_encode($_POST['mobile'])."',
+		'".base64_encode($_POST['email'])."'
+	)")){
+		echo "<script>alert('Adding success!')</script>";
+		echo "<script>window.open('index.php?page=profile','_self')</script>";
+	}else{
+		$wer = '<p style="color:#f00;">Something wrong! please try again.</p>';
+	}
+}
+if(!empty($_GET['ref_delete_id'])){
+	if($mysqli->query("delete from reference where id = '".$_GET['ref_delete_id']."'")){
+		echo "<script>alert('Delete success!')</script>";
+		echo "<script>window.open('index.php?page=profile','_self')</script>";
+	}else{
+		$wer = '<p style="color:#f00;">Something wrong! please try again.</p>';
+	}
+}
+
 //-----------------------------------
 if(isset($_POST['add_skill'])){
 	if($mysqli->query("insert skill values(
@@ -93,6 +118,49 @@ if(!empty($_GET['skill_delete_id'])){
 		$wer = '<p style="color:#f00;">Something wrong! please try again.</p>';
 	}
 }
+
+if(isset($_POST['add_proskill'])){
+	if($mysqli->query("insert professionalskill values(
+		'',
+		'".$_SESSION['profile_session']."',
+		'".base64_encode($_POST['skill'])."'
+	)")){
+		echo "<script>alert('Adding success!')</script>";
+		echo "<script>window.open('index.php?page=profile','_self')</script>";
+	}else{
+		$wer = '<p style="color:#f00;">Something wrong! please try again.</p>';
+	}
+}
+if(!empty($_GET['proskill_delete_id'])){
+	if($mysqli->query("delete from professionalskill where id = '".$_GET['proskill_delete_id']."'")){
+		echo "<script>alert('Delete success!')</script>";
+		echo "<script>window.open('index.php?page=profile','_self')</script>";
+	}else{
+		$wer = '<p style="color:#f00;">Something wrong! please try again.</p>';
+	}
+}
+
+if(isset($_POST['add_lanskill'])){
+	if($mysqli->query("insert languageskill values(
+		'',
+		'".$_SESSION['profile_session']."',
+		'".base64_encode($_POST['skill'])."'
+	)")){
+		echo "<script>alert('Adding success!')</script>";
+		echo "<script>window.open('index.php?page=profile','_self')</script>";
+	}else{
+		$wer = '<p style="color:#f00;">Something wrong! please try again.</p>';
+	}
+}
+if(!empty($_GET['lanskill_delete_id'])){
+	if($mysqli->query("delete from languageskill where id = '".$_GET['lanskill_delete_id']."'")){
+		echo "<script>alert('Delete success!')</script>";
+		echo "<script>window.open('index.php?page=profile','_self')</script>";
+	}else{
+		$wer = '<p style="color:#f00;">Something wrong! please try again.</p>';
+	}
+}
+
 ?>
 <div class="container" style="padding-bottom:150px;">
 <?php if(!empty($wer)){ echo $wer; }?>
@@ -175,11 +243,54 @@ if(!empty($_GET['skill_delete_id'])){
 			<?php } ?>	  
 			</table>
 		</div>
+
+		<div class="col-sm-4">
+		  
+			<form action="" method="post">
+				<p>References</p>
+				<div class="form-group">
+				  <label>Reference name</label>
+				  <input type="text" class="form-control" placeholder="Reference name" name="reference_name" required>
+				</div>
+				<div class="form-group">
+				  <label>Position</label>
+				  <input type="text" class="form-control" placeholder="Position" name="position" required>
+				</div>
+				<div class="form-group">
+				  <label>Mobile</label>
+				  <input type="text" class="form-control" placeholder="Mobile" name="mobile" required>
+				</div>	
+				<div class="form-group">
+				  <label>Email</label>
+				  <input type="text" class="form-control" placeholder="Email" name="email" required>
+				</div>			
+				<button name="addref" type="submit" class="btn btn-default">Add</button>
+			</form>
+			
+			<table class="table table-bordered" style="margin-top:20px;">
+			<?php
+				$query = $mysqli->query("select * from reference where a_id = '".$_SESSION['profile_session']."'");
+				while($row = mysqli_fetch_assoc($query)){
+			?>
+				  <tr>
+					<td>
+						<?php echo base64_decode($row['reference_name']); ?><hr style="margin:0px;border:solid 1px #eee;"/>
+						<?php echo base64_decode($row['position']); ?><hr style="margin:0px;border:solid 1px #eee;"/>
+						<?php echo base64_decode($row['mobile']); ?>
+						<?php echo base64_decode($row['email']); ?>
+					</td>
+					<td>
+						<a href="index.php?page=profile&ref_delete_id=<?php echo $row['id']; ?>">delete</a>
+					</td>
+				  </tr>
+			<?php } ?>	  
+			</table>
+		</div>
 		
 		<div class="col-sm-4">
 		  
 			<form action="" method="post">
-				<p>Skill information</p>
+				<p>Personal skill information</p>
 
 				<div class="form-group">
 				  <label>Skill Name:</label>
@@ -203,5 +314,60 @@ if(!empty($_GET['skill_delete_id'])){
 			<?php } ?>	  
 			</table>
 		</div>
+
+		<div class="col-sm-4">
+		  
+			<form action="" method="post">
+				<p>Professional skill information</p>
+
+				<div class="form-group">
+				  <label>Skill Name:</label>
+				  <input type="text" class="form-control" placeholder="Skill Name" name="skill" required>
+				</div>			
+				<button name="add_proskill" type="submit" class="btn btn-default">Add skill</button>
+			</form>
+			<table class="table table-bordered" style="margin-top:20px;">
+			<?php
+				$query = $mysqli->query("select * from professionalskill where a_id = '".$_SESSION['profile_session']."'");
+				while($row = mysqli_fetch_assoc($query)){
+			?>
+				  <tr>
+					<td>
+						<?php echo base64_decode($row['content']); ?>
+					</td>
+					<td>
+						<a href="index.php?page=profile&proskill_delete_id=<?php echo $row['id']; ?>">delete</a>
+					</td>
+				  </tr>
+			<?php } ?>	  
+			</table>
+		</div>
+		<div class="col-sm-4">
+		  
+		  <form action="" method="post">
+			  <p>Language skill information</p>
+
+			  <div class="form-group">
+				<label>Skill Name:</label>
+				<input type="text" class="form-control" placeholder="Skill Name" name="skill" required>
+			  </div>			
+			  <button name="add_lanskill" type="submit" class="btn btn-default">Add skill</button>
+		  </form>
+		  <table class="table table-bordered" style="margin-top:20px;">
+		  <?php
+			  $query = $mysqli->query("select * from languageskill where a_id = '".$_SESSION['profile_session']."'");
+			  while($row = mysqli_fetch_assoc($query)){
+		  ?>
+				<tr>
+				  <td>
+					  <?php echo base64_decode($row['content']); ?>
+				  </td>
+				  <td>
+					  <a href="index.php?page=profile&lanskill_delete_id=<?php echo $row['id']; ?>">delete</a>
+				  </td>
+				</tr>
+		  <?php } ?>	  
+		  </table>
+	  </div>
 	</div>
 </div>

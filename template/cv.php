@@ -79,7 +79,7 @@ $profile = mysqli_fetch_assoc($mysqli->query("select * from profile where a_id =
 		
 		<section>
 			<div class="sectionTitle">
-				<h1>Key Skills</h1>
+				<h1>Personal Skills</h1>
 			</div>
 			
 			<div class="sectionContent">
@@ -95,7 +95,42 @@ $profile = mysqli_fetch_assoc($mysqli->query("select * from profile where a_id =
 			<div class="clear"></div>
 		</section>
 		
+		<section>
+			<div class="sectionTitle">
+				<h1>Professional Skills</h1>
+			</div>
+			
+			<div class="sectionContent">
+				<ul class="professionalSkills">
+			<?php
+				$query = $mysqli->query("select * from professionalskill where a_id = '".$get_user['email']."'");
+				while($row = mysqli_fetch_assoc($query)){
+			?>
+					<li><?php echo base64_decode($row['content']); ?></li>
+			<?php } ?>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</section>
 		
+		<section>
+			<div class="sectionTitle">
+				<h1>Language Skills</h1>
+			</div>
+			
+			<div class="sectionContent">
+				<ul class="languageSkills">
+			<?php
+				$query = $mysqli->query("select * from languageskill where a_id = '".$get_user['email']."'");
+				while($row = mysqli_fetch_assoc($query)){
+			?>
+					<li><?php echo base64_decode($row['content']); ?></li>
+			<?php } ?>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</section>
+
 		<section>
 			<div class="sectionTitle">
 				<h1>Education</h1>
@@ -118,6 +153,28 @@ $profile = mysqli_fetch_assoc($mysqli->query("select * from profile where a_id =
 			<div class="clear"></div>
 		</section>
 		
+		<section>
+			<div class="sectionTitle">
+				<h1>References</h1>
+			</div>
+			
+			<div class="sectionContent">
+			<?php
+				$query = $mysqli->query("select * from reference where a_id = '".$get_user['email']."'");
+				while($row = mysqli_fetch_assoc($query)){
+			?>
+				<article>
+					<h2><?php echo base64_decode($row['reference_name']); ?></h2>
+					<p class="subDetails"><?php echo base64_decode($row['position']); ?></p>
+					<p><?php echo base64_decode($row['mobile']); ?></p>
+					<p><?php echo base64_decode($row['email']); ?></p>
+				</article>
+			<?php } ?>
+				
+
+			</div>
+			<div class="clear"></div>
+		</section>
 	</div>
 </div>
 <script type="text/javascript">
